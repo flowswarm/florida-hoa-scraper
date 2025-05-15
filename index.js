@@ -10,7 +10,19 @@ app.get('/run-florida-scraper', async (req, res) => {
   const downloadPath = path.resolve(__dirname, 'downloads');
   if (!fs.existsSync(downloadPath)) fs.mkdirSync(downloadPath);
 
-  const browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox'] });
+  const browser = await puppeteer.launch({
+  headless: true,
+  args: [
+    "--no-sandbox",
+    "--disable-setuid-sandbox",
+    "--disable-dev-shm-usage",
+    "--disable-accelerated-2d-canvas",
+    "--no-first-run",
+    "--no-zygote",
+    "--single-process",
+    "--disable-gpu"
+  ]
+});
   const page = await browser.newPage();
 
   const client = await page.target().createCDPSession();
